@@ -1,71 +1,57 @@
 
 function TestGraph() {
-	var root = new Note("Root", "Minhas notas");
+	var root = newNote("Root", "Minhas notas");
 
-	var urgente = new Note("Urgente");
-	var ita = new Note("ITA");
+	var urgente = newNote("Urgente");
+	var ita = newNote("ITA");
 	root.addChildren(urgente, ita);
 
-	var ces22 = new Note("CES-22");
-	var ctc20 = new Note("CTC-20");
+	var ces22 = newNote("CES-22");
+	var ctc20 = newNote("CTC-20");
 	ita.addChildren(ces22, ctc20);
 
-	var boot = new Note("Projeto Boot", "Terminar.");
-	var anima = new Note("Projeto Anima", "Uso da Biblioteca javafx.");
-	var web = new Note("Projeto Web");
+	var boot = newNote("Projeto Boot", "Terminar.");
+	var anima = newNote("Projeto Anima", "Uso da Biblioteca javafx.");
+	var web = newNote("Projeto Web");
 	ces22.addChildren(boot, anima, web);
 
-	var atividade4 = new Note("Atividade 4", "Fazer atividade 4");
-	var aula4 = new Note("Aula 4", "Grafos.\nÁrvode de custo mínimo.\nKruskal.");
+	var atividade4 = newNote("Atividade 4", "Fazer atividade 4");
+	var aula4 = newNote("Aula 4", "Grafos.\nÁrvode de custo mínimo.\nKruskal.");
 	ctc20.addChildren(atividade4, aula4);
 
-	var app = new Note("Aplicativo", "Android.\nInterface.\nFuncionalidades.");
-	var servidor = new Note("Servidor", "python ou node.js.\nParse.\nSincronização utilizando http.");
+	var app = newNote("Aplicativo", "Android.\nInterface.\nFuncionalidades.");
+	var servidor = newNote("Servidor", "python ou node.js.\nParse.\nSincronização utilizando http.");
 	web.addChildren(app, servidor);
 
 	return root;
 }
 
-function Note (_title, _text) {
-	var title    = _title;
-	var text     = (_text    === undefined) ? "" : _text;
-	var children = [];
-	var id       = createId()
 
-	function createId () {
-		return Math.floor(Math.random()*100000000000000000);
-	};
+function createId () {
+	return Math.floor(Math.random()*100000000000000000);
+};
 
-	this.getId = function () {
-		return id;
-	};
-	this.getTitle = function () {
-		return title;
-	};
-	this.getText = function () {
-		return text;
-	};
-	this.getChildren = function () {
-		return children;
-	};
-
-	this.setTitle = function (t) {
-		title = t;
-	};
-	this.setText = function (t) {
-		text = t;
-	};
-	this.addChildren = function () {
+function newNote (_title, _text) {
+	function addChildren () {
 		for (var i = 0; i < arguments.length; i++) {
-			children.push(arguments[i]);
+			this.children.push(arguments[i]);
 		};
 	};
-	this.removeChild = function (id) {
-		for (var i = 0; i < children.length; i++) {
-			if (children[i].getId() == id) {
-				children.splice(i,i+1);
+	function removeChild (id) {
+		for (var i = 0; i < this.children.length; i++) {
+			if (this.children[i].getId() == id) {
+				this.children.splice(i,i+1);
 				return;
 			}
 		};
+	};
+
+	return {
+		title:    _title,
+		text:     (_text === undefined) ? "" : _text,
+		children: [],
+		id:       createId(),
+		addChildren: addChildren,
+		removeChild: removeChild
 	};
 }
