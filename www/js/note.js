@@ -1,6 +1,5 @@
-
 function TestGraph() {
-	var root = newNote("Root", "Minhas notas");
+	var root = newNote("root", "Minhas notas", 0);
 
 	var urgente = newNote("Urgente");
 	var ita = newNote("ITA");
@@ -15,31 +14,168 @@ function TestGraph() {
 	var web = newNote("Projeto Web");
 	ces22.addChildren(boot, anima, web);
 
-	var atividade4 = newNote("Atividade 4", "Fazer atividade 4");
+	var atividade17 = newNote("Atividade 17", "Fazer atividade 17");
 	var aula4 = newNote("Aula 4", "Grafos.\nÁrvode de custo mínimo.\nKruskal.");
-	ctc20.addChildren(atividade4, aula4);
+	ctc20.addChildren(atividade17, aula4);
 
 	var app = newNote("Aplicativo", "Android.\nInterface.\nFuncionalidades.");
 	var servidor = newNote("Servidor", "python ou node.js.\nParse.\nSincronização utilizando http.");
 	web.addChildren(app, servidor);
 
-	return root;
+	urgente.addChildren(web, atividade17);
+
+	var notes = [root, urgente, ita, ces22, ctc20, boot, anima, web, atividade17, aula4, app, servidor];
+
+	return notes;
+}
+
+var NoteService = function () {
+	this.initialize = function () {
+		var deferred = $.Deferred();
+		this.db = window.openDatabase("NoteDB", "1.0", "Rainbow Note DB", 200000);
+		this.db.transaction(
+			function (tx) {
+				console.log('transaction happening');
+				createNoteTable(tx);
+				createChildrenTable(tx);
+				addSampleData(tx, TestGraph());
+			},
+			function (error) {
+				alert('Transaction error: ' + error.message);
+				deferred.reject('Transaction error: ' + error.message);
+			},
+			function () {
+				console.log('Transaction success');
+				deferred.resolve();
+			}
+		);
+		return deferred.promise();
+	}
+
+	this.findRoot = function () {
+		return this.findById(0);
+	}
+
+	this.findById = function (_id) {
+		var deferred = $.Deferred();
+		this.db.transaction(
+			function (tx) {
+				var sql = "SELECT * " +
+						  "FROM notes " +
+						  "WHERE id="+_id;
+				tx.executeSql(sql,
+							  null,
+							  function (tx, results) {
+							  	alert(results);
+							  	deferred.resolve(results.rows.length === 1 ? results.rows.item(0) : null);
+							  },
+							  function (tx, error) {
+							  	alert(error.message);
+							  }
+				);	
+			},
+			function (error) {
+				deferred.reject("Transaction error: " + error.message);
+			}
+		);
+		var note = deferred.promise();
+		console.log(note);
+		console.log(!note);
+		if (!note)	return null;
+		note.children = [];
+		this.db.transaction(
+			function (tx) {
+				var sql = "SELECT idChild " +
+						  "FROM children " +
+						  "WHERE idParent=" + _id;
+				tx.executeSql(sql, null,
+							  function (tx, results) {
+							  	for (var i = 0; i < results.rows.length; i++) {
+							  		var row = results.rows.item(i);
+							  		note.children.push(row['id']);
+							  	};
+							  }
+				);
+			},
+			function (error) {
+				alert("Transaction error: " + error.message);
+			}
+		);
+		return note;
+	}
+
+	var createNoteTable = function (tx) {
+		//tx.executeSql('DROP TABLE IF EXISTS notes');
+		var sql = "CREATE TABLE IF NOT EXISTS notes ( " +
+				  "id INTEGER PRIMARY KEY, " +
+				  "title VARCHAR(50), " +
+				  "text  VARCHAR(500))";
+		tx.executeSql(
+			sql,
+			null, 
+			function ()          { console.log('Create Note Table success')  },
+			function (tx, error) { alert('Create Note Table error: ' + error.message)}
+		);
+	}
+
+	var createChildrenTable = function (tx) {
+		//tx.executeSql('DROP TABLE IF EXISTS children');
+		var sql = "CREATE TABLE IF NOT EXISTS children ( " +
+				  "idParent INTEGER PRIMARY KEY, " +
+				  "idChild  INTEGER )";
+		tx.executeSql(
+			sql,
+			null, 
+			function ()     { console.log('Create Children Table success')  },
+			function (tx, error) { alert('Create Children Table error: ' + error.message)}
+		);
+	}
+
+	var addSampleData = function (tx, notes) {
+		console.log('start sample');
+		var sql_notes = "INSERT OR REPLACE INTO notes " + 
+						"(id, title, text) " +
+						"VALUES (?, ?, ?)";
+		var sql_children = "INSERT OR REPLACE INTO children " +
+						   "(idParent, idChild) " +
+						   "VALUES (?, ?)";
+		for (var i = 0; i < notes.length; i++) {
+			var note = notes[i];
+			tx.executeSql(sql_notes,
+						  [note.id, note.title, note.text],
+						  function () {console.log('INSERT note success');},
+						  function (tx, error) {alert('INSERT note error:' + error.message)}
+						  );
+			for (var j = 0; j < note.children.length; j++) {
+				var child = note.children[j];
+				tx.executeSql(sql_children,
+							 [note.id, child],
+							 function () {console.log('INSERT children success');},
+							 function (tx, error) {alert('INSERT children error:' + error.message)}
+				);
+			};
+		};
+		console.log('end sample');
+	}
 }
 
 
+
+
+
 function createId () {
-	return Math.floor(Math.random()*100000000000000000);
+	return Math.floor(Math.random()*1000000000);
 };
 
-function newNote (_title, _text) {
+function newNote (_title, _text, _id) {
 	function addChildren () {
 		for (var i = 0; i < arguments.length; i++) {
-			this.children.push(arguments[i]);
+			this.children.push(arguments[i].id);
 		};
 	};
 	function removeChild (id) {
 		for (var i = 0; i < this.children.length; i++) {
-			if (this.children[i].getId() == id) {
+			if (this.children[i] == id) {
 				this.children.splice(i,i+1);
 				return;
 			}
@@ -50,7 +186,7 @@ function newNote (_title, _text) {
 		title:    _title,
 		text:     (_text === undefined) ? "" : _text,
 		children: [],
-		id:       createId(),
+		id:       (_id === undefined) ? createId() : _id,
 		addChildren: addChildren,
 		removeChild: removeChild
 	};
