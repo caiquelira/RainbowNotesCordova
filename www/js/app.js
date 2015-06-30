@@ -1,28 +1,27 @@
 (function () {
 
 	//Local Variables
-	var homeTpl = Handlebars.compile($("#home-tpl").html());
-	var noteTpl = Handlebars.compile($("#note-tpl").html());
-	var addTpl  = Handlebars.compile($("#add-tpl" ).html());
+	NoteView.prototype.template = Handlebars.compile($("#note-tpl").html());
+	AddView.prototype.template  = Handlebars.compile($("#add-tpl" ).html());
+	console.log(NoteView.prototype);
 	var service = new NoteService();
-	service.initialize().done(function () {
-		service.findRoot().done(function (root) {
-			console.log(root. 	.length);
-			console.log(root);
-			$('#note-div').html(noteTpl(root));
+
+	service.initialize().done( function () {
+		service.findRoot().done( function (root) {
+			$('body').html(new NoteView().render(root));
+			
 		});
+	}
+		);
 
 		//service.findById().done(function (note) {console.log(note);} );
-
-		console.log('Service initialized');
-	});
 
 
 	//Event registration:
 
-	$('.help-btn').on('click', function() {
-        alert("Teste de Notificação");
-    });
+	///$('.help-btn').on('click', function() {
+    ///    alert("Teste de Notificação");
+    ///});
 
 	document.addEventListener('deviceReady', function () {
 		if (navigator.notification) {

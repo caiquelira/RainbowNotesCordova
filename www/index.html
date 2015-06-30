@@ -14,16 +14,6 @@
     </head>
     <body>
 
-        <script id="home-tpl" type="text/template">
-            <header class="bar bar-nav">
-                <h1 class="title">Nota</h1>
-            </header>
-            <div class="bar bar-standard bar-header-secondary">
-                <input class='search-key' type="search"/>
-            </div>
-            <div class="content"></div>
-        </script>
-
         <script id="note-tpl" type="text/template">
             <div class='header'><h1>{{title}}</h1></div>
             <div><p>{{text}}</p></div>
@@ -38,21 +28,25 @@
                 </li>
                 {{/each}}
             </ul>
+            <p><button class="help-btn">Help</button></p>
         </script>
 
         <script id="add-tpl" type="text/template">
-            //template for addNote
+            <p><button class="help-btn">Help</button></p>
         </script>
 
 
         <p><button class="help-btn">Help</button></p>
-        <div id="note-div"></div>
 
-        <!--script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script-->
+        <script src="cordova.js"></script>
+
         <script src="lib/jquery.js"></script>
         <script src="lib/handlebars.js"></script>
+        <script src="lib/fastclick.js"></script>
+
         <script src="js/note.js"></script>
+        <script src="js/NoteView.js"></script>
+        <script src="js/AddView.js"></script>
         <script src="js/app.js"></script>
     </body>
 </html>
