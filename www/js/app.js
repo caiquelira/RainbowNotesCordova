@@ -3,16 +3,16 @@
 	//Local Variables
 	var homeTpl = Handlebars.compile($("#home-tpl").html());
 	var noteTpl = Handlebars.compile($("#note-tpl").html());
+	var addTpl  = Handlebars.compile($("#add-tpl" ).html());
 	var service = new NoteService();
 	service.initialize().done(function () {
-		var root = service.findRoot();
-		//service.findRoot().done(function (root) {
+		service.findRoot().done(function (root) {
+			console.log(root. 	.length);
 			console.log(root);
-		//	console.log('oioioi');
-		//	//$('#note-div').html(noteTpl(root));
-		//});
+			$('#note-div').html(noteTpl(root));
+		});
 
-	console.log(noteTpl(root));
+		//service.findById().done(function (note) {console.log(note);} );
 
 		console.log('Service initialized');
 	});
