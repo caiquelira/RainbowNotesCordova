@@ -16,71 +16,61 @@
     </head>
     <body>
 
+        <header class="bar bar-nav">
+            <span class="icon icon-home pull-left" id="link-home"></span>
+            <span class="icon icon-info pull-right" id="link-settings"></span>
+            <h1 class="title2">Rainbow Notes</h1>
+        </header>
+
+        <div id="screen"></div>
+
         <script id="note-tpl" type="text/template">
-            /*<div class='header'><h1>{{title}}</h1></div>
-            <div><p>{{text}}</p></div>
-            <ul class="table-view">
-                {{#each children}}
-                <li class="table-view-cell media">
-                  <a href="#note/{{id}}">
-                      <div class="media-body">
-                          {{this}}   
-                      </div>
-                  </a>
-                </li>
-                {{/each}}
-            </ul>
-            <p><button class="help-btn">Help</button></p>
-            */
-            <header class="bar bar-nav">
-                <span class="icon icon-home pull-left"></span>
+
+            <header class="bar bar-header-secondary">
                 <div class="pull-right">
-                    <span class="icon icon-gear">&nbsp;&nbsp;</span>
-                </div>
-                
-                <h1 class="title2">Rainbow Notes</h1>
-            </header><header class="bar bar-header-secondary">
-                <div class="pull-right">
-                    <span class="icon icon-compose">&nbsp;&nbsp;</span>
-                    <span class="icon icon-trash"></span>
+                    <span class="icon icon-compose"></span>
+                    {{#if id}}
+                        &nbsp;&nbsp;
+                        <span class="icon icon-trash"></span>
+                    {{/if}}
                 </div>
                 
                 <h1 class="title" style="text-align: left;">&nbsp;&nbsp;&nbsp;{{title}}</h1>
             </header>
 
             <div class="bar bar-tab">
-              <a id="link-parents" class="tab-item" href="#content-parents">
-                <span class="icon icon-up"></span>
-                <span class="tab-label">Parents</span>
-              </a>
-              <a  id="link-text"  class="tab-item active" href="#content-text">
-
+                {{#if id}}
+                <a id="link-parents" class="tab-item" href="#content-parents">
+                    <span class="icon icon-up"></span>
+                    <span class="tab-label">Parents</span>
+                </a>
+                {{/if}}
+                <a id="link-text"  class="tab-item active" href="#content-text">
                     <span class="icon icon-edit"></span>
                     <span class="tab-label">Text</span>
-              </a>
-              <a  id="link-children"  class="tab-item" href="#content-children">
-                <span class="icon icon-down"></span>
-                <span class="tab-label">Children</span>
-              </a>
+                </a>
+                <a id="link-children"  class="tab-item" href="#content-children">
+                    <span class="icon icon-down"></span>
+                    <span class="tab-label">Children</span>
+                </a>
             </div>
 
             <div class="content">
 
             </div>
-
+            
             <div id="content-parents">
                 <div class="card">
                     <ul class="table-view">
-                        {{#each parents}}
-                        <a href="">
-                            <li class="table-view-cell">
-                            {{title}}
-                            </li>
-                        </a>
+                        {{#each parentsList}}
+                        <li class="table-view-cell">
+                            <a href="#note/{{id}}" class="navigate-right">
+                                {{title}}
+                            </a>
+                        </li>
                         {{/each}}
                     </ul>
-                </div>
-
+                </div>            
             </div>
 
             <div id="content-text">
@@ -92,10 +82,10 @@
             <div id="content-children">
                 <div class="card">
                     <ul class="table-view">
-                        {{#each children}}
+                        {{#each childrenList}}
                         <li class="table-view-cell">
                             <a href="#note/{{id}}" class="navigate-right">
-                                {{this}}
+                                {{title}}
                             </a>
                         </li>
                         {{/each}}
@@ -105,7 +95,23 @@
         </script>
 
         <script id="add-tpl" type="text/template">
-            <p><button class="help-btn">Help</button></p>
+            
+            <header class="bar bar-header-secondary">
+                <span class="icon icon-close pull-left" id="link-cancel" parent={{id}}>&nbsp;&nbsp;</span>
+                <span class="icon icon-check pull-right" id="link-confirm"></span>
+                
+                <h1 class="title">&nbsp;&nbsp;&nbsp;Adicionando em: {{title}}</h1>
+            </header>
+
+            <div class="content">
+                <div class="content-padded">
+                    <form>
+                        <input type="text" placeholder="Título da Nota">
+                        <textarea rows="10" placeholder="Texto"></textarea>
+                        <button class="btn btn-positive btn-block">Criar Nota</button>
+                    </form>
+                </div>
+            </div>
         </script>
 
 

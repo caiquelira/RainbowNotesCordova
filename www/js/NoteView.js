@@ -7,8 +7,6 @@ var NoteView = function () {
 
 	this.render = function (note) {
 		this.div.html(this.template(note));
-		$(".help-btn", this.div).on('click', function () { alert('not implemented');/*$('body').html(AddView()); */});
-		
 		$('#content-parents', this.div).hide();
 		$('#content-text', this.div).hide();
 		$('#content-children', this.div).hide();
