@@ -10,12 +10,14 @@
         <!--link rel="stylesheet" type="text/css" href="css/index.css"-->
         <title>Hello World</title>
 
-        <link rel="stylesheet" type="text/css" href="assets/ratchet/css/ratchet.css">
+        <link rel="stylesheet" type="text/css" href="ratchet/css/ratchet.min.css">
+        <link rel="stylesheet" type="text/css" href="ratchet/css/ratchet-theme-ios.css">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
     </head>
     <body>
 
         <script id="note-tpl" type="text/template">
-            <div class='header'><h1>{{title}}</h1></div>
+            /*<div class='header'><h1>{{title}}</h1></div>
             <div><p>{{text}}</p></div>
             <ul class="table-view">
                 {{#each children}}
@@ -29,6 +31,77 @@
                 {{/each}}
             </ul>
             <p><button class="help-btn">Help</button></p>
+            */
+            <header class="bar bar-nav">
+                <span class="icon icon-home pull-left"></span>
+                <div class="pull-right">
+                    <span class="icon icon-gear">&nbsp;&nbsp;</span>
+                </div>
+                
+                <h1 class="title2">Rainbow Notes</h1>
+            </header><header class="bar bar-header-secondary">
+                <div class="pull-right">
+                    <span class="icon icon-compose">&nbsp;&nbsp;</span>
+                    <span class="icon icon-trash"></span>
+                </div>
+                
+                <h1 class="title" style="text-align: left;">&nbsp;&nbsp;&nbsp;{{title}}</h1>
+            </header>
+
+            <div class="bar bar-tab">
+              <a id="link-parents" class="tab-item" href="#content-parents">
+                <span class="icon icon-up"></span>
+                <span class="tab-label">Parents</span>
+              </a>
+              <a  id="link-text"  class="tab-item active" href="#content-text">
+
+                    <span class="icon icon-edit"></span>
+                    <span class="tab-label">Text</span>
+              </a>
+              <a  id="link-children"  class="tab-item" href="#content-children">
+                <span class="icon icon-down"></span>
+                <span class="tab-label">Children</span>
+              </a>
+            </div>
+
+            <div class="content">
+
+            </div>
+
+            <div id="content-parents">
+                <div class="card">
+                    <ul class="table-view">
+                        {{#each parents}}
+                        <a href="">
+                            <li class="table-view-cell">
+                            {{title}}
+                            </li>
+                        </a>
+                        {{/each}}
+                    </ul>
+                </div>
+
+            </div>
+
+            <div id="content-text">
+                <div class="content-padded">
+                    <h4>{{text}}</h4>
+                </div>
+            </div>
+
+            <div id="content-children">
+                <div class="card">
+                    <ul class="table-view">
+                        {{#each children}}
+                        <li class="table-view-cell">
+                            <a href="#note/{{id}}" class="navigate-right">
+                                {{this}}
+                            </a>
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>            
+            </div>
         </script>
 
         <script id="add-tpl" type="text/template">

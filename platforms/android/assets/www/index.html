@@ -10,56 +10,109 @@
         <!--link rel="stylesheet" type="text/css" href="css/index.css"-->
         <title>Hello World</title>
 
-        <link rel="stylesheet" type="text/css" href="assets/ratchet/css/ratchet.css">
+        <link rel="stylesheet" type="text/css" href="ratchet/css/ratchet.min.css">
+        <link rel="stylesheet" type="text/css" href="ratchet/css/ratchet-theme-ios.css">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
     </head>
     <body>
-        <script src="lib/jquery.js"></script>
-        <script src="lib/handlebars.js"></script>
-        <script src="js/note.js"></script>
-        <script src="js/app.js"></script>
-
-        <script id="home-tpl" type="text/template">
-            <header class="bar bar-nav">
-                <h1 class="title">Nota</h1>
-            </header>
-            <div class="bar bar-standard bar-header-secondary">
-                <input class='search-key' type="search"/>
-            </div>
-            <div class="content"></div>
-        </script>
 
         <script id="note-tpl" type="text/template">
-            <div class='header'><h1>{{title}}</h1></div>
+            /*<div class='header'><h1>{{title}}</h1></div>
             <div><p>{{text}}</p></div>
             <ul class="table-view">
                 {{#each children}}
                 <li class="table-view-cell media">
                   <a href="#note/{{id}}">
                       <div class="media-body">
-                          {{title}}
+                          {{this}}   
                       </div>
                   </a>
                 </li>
                 {{/each}}
             </ul>
+            <p><button class="help-btn">Help</button></p>
+            */
+            <header class="bar bar-nav">
+                <span class="icon icon-home pull-left"></span>
+                <div class="pull-right">
+                    <span class="icon icon-compose">&nbsp;&nbsp;</span>
+                    <span class="icon icon-trash"></span>
+                </div>
+                
+                <h1 class="title2">Nome da Nota</h1>
+            </header>
+
+            <div class="bar bar-tab">
+              <a id="link-parents" class="tab-item" href="#content-parents">
+                <span class="icon icon-up"></span>
+                <span class="tab-label">Parents</span>
+              </a>
+              <a  id="link-text"  class="tab-item active" href="#content-text">
+
+                    <span class="icon icon-edit"></span>
+                    <span class="tab-label">Text</span>
+              </a>
+              <a  id="link-children"  class="tab-item" href="#content-children">
+                <span class="icon icon-down"></span>
+                <span class="tab-label">Children</span>
+              </a>
+            </div>
+
+            <div class="content">
+
+            </div>
+
+            <div id="content-parents">
+                <div class="card">
+                    <ul class="table-view">
+                        {{#each parents}}
+                        <a href="">
+                            <li class="table-view-cell">
+                                {{title}}
+                            </li>
+                        </a>
+                        {{/each}}
+                    </ul>
+                </div>
+
+            </div>
+
+            <div id="content-text">
+                {{text}}
+
+            </div>
+
+            <div id="content-children">
+                <div class="card">
+                    <ul class="table-view">
+                        {{#each children}}
+                        <a href="#note/{{id}}">
+                            <li class="table-view-cell">
+                                {{this}}
+                            </li>
+                        </a>
+                        {{/each}}
+                    </ul>
+                </div>            
+            </div>
+        </script>
+
+        <script id="add-tpl" type="text/template">
+            <p><button class="help-btn">Help</button></p>
         </script>
 
 
         <p><button class="help-btn">Help</button></p>
-        <div class='search-view'>
-            <ul class='list employee-list'></ul>
-        </div>
 
+        <script src="cordova.js"></script>
 
-        <!--div class="app">
-            <h1>Apache Cordova</h1>
-            <div id="deviceready" class="blink">
-                <p class="event listening">Connecting to Device</p>
-                <p class="event received">Device is Ready</p>
-                <p> teste teste</p>
-            </div>
-        </div>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script-->
+        <script src="lib/jquery.js"></script>
+        <script src="lib/handlebars.js"></script>
+        <script src="lib/fastclick.js"></script>
+
+        <script src="js/note.js"></script>
+        <script src="js/NoteView.js"></script>
+        <script src="js/AddView.js"></script>
+        <script src="js/app.js"></script>
     </body>
 </html>

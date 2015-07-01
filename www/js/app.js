@@ -6,7 +6,7 @@
 	console.log(NoteView.prototype);
 	var service = new NoteService();
 
-	service.initialize().done( function () {
+	service.initialize(true).done( function () {
 		service.findRoot().done( function (root) {
 			$('body').html(new NoteView().render(root));
 			
