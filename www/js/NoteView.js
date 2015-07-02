@@ -1,19 +1,29 @@
 
-var NoteView = function () {
+var NoteView = function (service) {
 
-	this.initialize = function () {
+	this.initialize = function (service) {
 		this.div = $('<div/>');
+		this.service = service;	
 	}
 
 	this.render = function (note) {
 		this.div.html(this.template(note));
+
+		var serv = this.service;
 		$('#content-parents', this.div).hide();
 		$('#content-text', this.div).hide();
 		$('#content-children', this.div).hide();
 
-		//start active		
-		$('#link-children', this.div).addClass('active');
-		$('.content', this.div).html($('#content-children', this.div).html());
+		//start active
+		console.log(note);
+		if (note.children.length > 0) {
+			$('#link-children', this.div).addClass('active');
+			$('.content', this.div).html($('#content-children', this.div).html());
+		}
+		else {
+			$('#link-text', this.div).addClass('active');
+			$('.content', this.div).html($('#content-text', this.div).html());
+		}
 
 
 		$('#link-parents',this.div).click(function () {
@@ -37,11 +47,22 @@ var NoteView = function () {
 			$('#link-children', this.div).addClass('active');
 		});
 
-		$('.icon-compose', this.div).click(function () {alert('button edit');});
-		$('.icon-trash', this.div).click(function () {alert('button delete');});
-		$('.icon-home', this.div).click(function () {alert('button home');});
+		//$('.icon-compose', this.div).click(function () {alert('button edit');});
+		var deleteCallback = function (pressed) {
+			console.log('pressed button');
+			console.log(pressed);
+			if (pressed == 1) {
+				var id_ = $('.icon-trash', this.div).attr('myid');
+				serv.deleteNote(id_);
+				$('#screen', this.div).html(new NoteView().render(serv.findRoot()));
+			}
+		}
+		$('.icon-trash', this.div).click( function () {
+			window.confirm("Deseja apagar a nota?", deleteCallback, "Confirmação", "Sim,Não");
+		});
+		//$('.icon-home', this.div).click(function () {alert('button home');});
 		return this.div;
 	}
 
-	this.initialize();
+	this.initialize(service);
 }

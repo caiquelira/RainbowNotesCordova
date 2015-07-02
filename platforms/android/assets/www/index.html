@@ -17,21 +17,23 @@
     <body>
 
         <header class="bar bar-nav">
-            <span class="icon icon-home pull-left" id="link-home"></span>
+            <a class="icon icon-home pull-left" id="link-home" href="#"></a>
             <span class="icon icon-info pull-right" id="link-settings"></span>
             <h1 class="title2">Rainbow Notes</h1>
         </header>
 
         <div id="screen"></div>
 
+<!--           NOTE TEMPLATE           -->
+       
         <script id="note-tpl" type="text/template">
 
             <header class="bar bar-header-secondary">
                 <div class="pull-right">
-                    <span class="icon icon-compose"></span>
+                    <a class="icon icon-compose" href="#edit/{{id}}"></a>
                     {{#if id}}
                         &nbsp;&nbsp;
-                        <span class="icon icon-trash"></span>
+                        <span class="icon icon-trash" backId="{{backId}}" myid="{{id}}"></span>
                     {{/if}}
                 </div>
                 
@@ -42,16 +44,16 @@
                 {{#if id}}
                 <a id="link-parents" class="tab-item">
                     <span class="icon icon-up"></span>
-                    <span class="tab-label">Parents</span>
+                    <span class="tab-label">Categorias</span>
                 </a>
                 {{/if}}
                 <a id="link-text"  class="tab-item">
                     <span class="icon icon-edit"></span>
-                    <span class="tab-label">Text</span>
+                    <span class="tab-label">Ver Texto</span>
                 </a>
                 <a id="link-children"  class="tab-item">
                     <span class="icon icon-down"></span>
-                    <span class="tab-label">Children</span>
+                    <span class="tab-label">Subnotas</span>
                 </a>
             </div>
 
@@ -69,6 +71,16 @@
                             </a>
                         </li>
                         {{/each}}
+                        <li class="table-view-divider"></li>
+
+                        <li class="table-view-cell">
+                            <a class="" href="#">
+                              <span class="media-object pull-left icon icon-plus"></span>
+                              <div class="media-body">
+                                Adcionar A Uma Categoria
+                              </div>
+                            </a>
+                        </li>
                     </ul>
                 </div>            
             </div>
@@ -89,25 +101,36 @@
                             </a>
                         </li>
                         {{/each}}
+                        <li class="table-view-divider"></li>
+                        <li class="table-view-cell">
+                            <a class="" href="#add/{{id}}">
+                              <span class="media-object pull-left icon icon-plus"></span>
+                              <div class="media-body">
+                                Adcionar Subnota
+                              </div>
+                            </a>
+                        </li>
                     </ul>
                 </div>            
             </div>
         </script>
 
+
+<!--                      ADD TEMPLATE                     -->
         <script id="add-tpl" type="text/template">
             
             <header class="bar bar-header-secondary">
-                <h1 class="title">&nbsp;&nbsp;&nbsp;Adicionando em: {{title}}</h1>
+                <h1 class="title">&nbsp;&nbsp;&nbsp;Adicionando em: {{parentTitle}}</h1>
             </header>
 
             <div class="bar bar-tab">
-                <a id="link-cancel"  class="tab-item" parent="{{id}}">
-                    <span class="icon icon-close" parent="{{id}}"></span>
-                    <span class="tab-label" parent="{{id}}">Cancelar</span>
+                <a id="link-cancel"  class="tab-item" parent="{{parentId}}">
+                    <span class="icon icon-close" parent="{{parentId}}"></span>
+                    <span class="tab-label" parent="{{parentId}}">Cancelar</span>
                 </a>
-                <a id="link-confirm"  class="tab-item" parent="{{id}}">
-                    <span class="icon icon-check" parent="{{id}}"></span>
-                    <span class="tab-label" parent="{{id}}">Criar</span>
+                <a id="link-confirm"  class="tab-item" parent="{{parentId}}">
+                    <span class="icon icon-check" parent="{{parentId}}"></span>
+                    <span class="tab-label" parent="{{parentId}}">Criar</span>
                 </a>
             </div>
             </div>
@@ -115,10 +138,46 @@
             <div class="content">
                 <div class="content-padded">
                     <form>
-                        <input type="text" placeholder="Título da Nota">
-                        <textarea rows="10" placeholder="Texto"></textarea>
+                        <input name="title" type="text" placeholder="Título da Nota">
+                        <textarea name="text" rows="10" placeholder="Texto"></textarea>
+                        <input name="parentId" type="hidden" value="{{parentId}}">
+
                     </form>
                 </div>
+
+            </div>
+
+        </script>
+
+<!--                      EDIT TEMPLATE                     -->
+        <script id="edit-tpl" type="text/template">
+            
+            <header class="bar bar-header-secondary">
+                <h1 class="title">&nbsp;&nbsp;&nbsp;Editando</h1>
+            </header>
+
+            <div class="bar bar-tab">
+                <a id="link-cancel"  class="tab-item" myid="{{id}}">
+                    <span class="icon icon-close" myid="{{id}}"></span>
+                    <span class="tab-label" myid="{{id}}">Cancelar</span>
+                </a>
+                <a id="link-confirm"  class="tab-item" myid="{{id}}">
+                    <span class="icon icon-check" myid="{{id}}"></span>
+                    <span class="tab-label" myid="{{id}}">Confirmar</span>
+                </a>
+            </div>
+            </div>
+
+            <div class="content">
+                <div class="content-padded">
+                    <form>
+                        <input name="title" type="text" value="{{title}}">
+                        <textarea name="text" rows="10" placeholder="Texto">{{text}}</textarea>
+                        <input name="id" type="hidden" value="{{id}}">
+
+                    </form>
+                </div>
+
             </div>
 
         </script>
@@ -134,6 +193,7 @@
         <script src="js/note.js"></script>
         <script src="js/NoteView.js"></script>
         <script src="js/AddView.js"></script>
+        <script src="js/EditView.js"></script>
         <script src="js/app.js"></script>
     </body>
 </html>

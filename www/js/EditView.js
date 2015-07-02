@@ -1,21 +1,21 @@
 
-var AddView = function (service) {
+var EditView = function (service) {
 
 	this.initialize = function (service) {
 		this.div = $('<div/>');
 		this.service = service;	
 	}
 
-	this.render = function (parent) {
-		this.div.html(this.template(parent));
+	this.render = function (note) {
+		this.div.html(this.template(note));
 
 		var serv = this.service;
 		$('#link-cancel', this.div).click( function (event) {
 			//console.log(event);
 			var element = $(event.toElement);
-			var parentId = parseInt(element.attr('parent'));
-			var parent = serv.findById(parentId);
-			$('#screen').html(new NoteView().render(parent));
+			var myid = parseInt(element.attr('myid'));
+			var back = serv.findById(myid);
+			$('#screen').html(new NoteView().render(back));
 		});
 		$('#link-confirm', this.div).click( function (event) {
 			var element = $(event.toElement);
@@ -31,12 +31,11 @@ var AddView = function (service) {
 			};
 
 			//console.log(input);
-			var note = newNote(input.title, input.text);
-			note.parents.push(parseInt(input.parentId));
+			var myid = parseInt(input.id);
+			var note = serv.findById(myid);
+			note.title = input.title;
+			note.text = input.text;
 			serv.setNote(note);
-			serv.link(parseInt(input.parentId), note.id);
-			console.log('this is the new note');
-			console.log(note);
 			$('#screen').html(new NoteView().render(note));
 		});
 

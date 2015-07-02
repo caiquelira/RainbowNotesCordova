@@ -22,13 +22,13 @@ function TestGraph() {
 	web.addParents(ces22);
 
 	var atividade17 = newNote("Atividade 17", "Fazer atividade 17");
-	var aula4 = newNote("Aula 4", "Grafos.\nÁrvode de custo mínimo.\nKruskal.");
+	var aula4 = newNote("Aula 4", "Grafos.\r\nÁrvore geradora de custo mínimo.\r\nKruskal.");
 	ctc20.addChildren(atividade17, aula4);
 	atividade17.addParents(ctc20);
 	aula4.addParents(ctc20);
 
-	var app = newNote("Aplicativo", "Android (Cordova).\nInterface.\nFuncionalidades.");
-	var servidor = newNote("Servidor", "python ou node.js.\nParse.\nSincronização utilizando http.");
+	var app = newNote("Aplicativo", "Android (Cordova).\r\nInterface.\r\nFuncionalidades.");
+	var servidor = newNote("Servidor", "python ou node.js.\r\nParse.\r\nSincronização utilizando http.");
 	web.addChildren(app, servidor);
 	app.addParents(web);
 	servidor.addParents(web);
@@ -86,9 +86,26 @@ var NoteService = function () {
 		return res;
 	}
 
-	this.setNote = function (note) {
-		var deferred = $.Deferred();
+	this.getTitle = function (_id) {
+		var note = this.findById(_id);
+		return note.title;
+	}
 
+	this.setNote = function (note) {
+		window.localStorage.setItem(note.id, JSON.stringify(note));
+	}
+
+	this.link = function (parentId, childId) {
+		console.log('linkou');
+		var parent = JSON.parse(window.localStorage.getItem(parentId));
+		parent.children.push(childId);
+		console.log('linked');
+		console.log(parent);
+		this.setNote(parent);
+	}
+
+	this.deleteNote = function (_id) {
+		window.localStorage.removeItem(_id);
 	}
 
 }
@@ -152,8 +169,10 @@ function newNote (_title, _text, _id) {
 		parents: [],
 		id:       (_id == 0) ? _id : createId(),
 		addChildren: addChildren,
+		addChildrenId: addChildrenId,
 		addParents: addParents,
 		removeParent: removeParent,
+		addParentsId: addParentsId,
 		removeChild: removeChild
 	};
 }
