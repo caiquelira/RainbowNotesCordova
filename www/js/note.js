@@ -64,6 +64,7 @@ var NoteService = function () {
 
 	this.findById = function (_id) {
 		//var notes = JSON.parse(window.localStorage.getItem("notes"));
+		console.log('id = ' + _id);
 		var res = JSON.parse(window.localStorage.getItem(_id));
 		/*var len = notes.length;
 		for (var i = 0; i < len; i++) {

@@ -7,13 +7,14 @@ var NoteView = function () {
 
 	this.render = function (note) {
 		this.div.html(this.template(note));
-		$(".help-btn", this.div).on('click', function () { alert('not implemented');/*$('body').html(AddView()); */});
-		
 		$('#content-parents', this.div).hide();
 		$('#content-text', this.div).hide();
 		$('#content-children', this.div).hide();
-		
-		$('.content', this.div).html($('#content-text', this.div).html());
+
+		//start active		
+		$('#link-children', this.div).addClass('active');
+		$('.content', this.div).html($('#content-children', this.div).html());
+
 
 		$('#link-parents',this.div).click(function () {
 			$('.content',this.div).html($('#content-parents', this.div).html());

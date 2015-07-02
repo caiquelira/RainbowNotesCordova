@@ -40,16 +40,16 @@
 
             <div class="bar bar-tab">
                 {{#if id}}
-                <a id="link-parents" class="tab-item" href="#content-parents">
+                <a id="link-parents" class="tab-item">
                     <span class="icon icon-up"></span>
                     <span class="tab-label">Parents</span>
                 </a>
                 {{/if}}
-                <a id="link-text"  class="tab-item active" href="#content-text">
+                <a id="link-text"  class="tab-item">
                     <span class="icon icon-edit"></span>
                     <span class="tab-label">Text</span>
                 </a>
-                <a id="link-children"  class="tab-item" href="#content-children">
+                <a id="link-children"  class="tab-item">
                     <span class="icon icon-down"></span>
                     <span class="tab-label">Children</span>
                 </a>
@@ -64,7 +64,7 @@
                     <ul class="table-view">
                         {{#each parentsList}}
                         <li class="table-view-cell">
-                            <a href="#note/{{id}}" class="navigate-right">
+                            <a href="#note/{{ id }}" class="navigate-right">
                                 {{title}}
                             </a>
                         </li>
@@ -84,7 +84,7 @@
                     <ul class="table-view">
                         {{#each childrenList}}
                         <li class="table-view-cell">
-                            <a href="#note/{{id}}" class="navigate-right">
+                            <a href="#note/{{ id }}" class="navigate-right">
                                 {{title}}
                             </a>
                         </li>
@@ -97,29 +97,37 @@
         <script id="add-tpl" type="text/template">
             
             <header class="bar bar-header-secondary">
-                <span class="icon icon-close pull-left" id="link-cancel" parent={{id}}>&nbsp;&nbsp;</span>
-                <span class="icon icon-check pull-right" id="link-confirm"></span>
-                
                 <h1 class="title">&nbsp;&nbsp;&nbsp;Adicionando em: {{title}}</h1>
             </header>
+
+            <div class="bar bar-tab">
+                <a id="link-cancel"  class="tab-item" parent="{{id}}">
+                    <span class="icon icon-close" parent="{{id}}"></span>
+                    <span class="tab-label" parent="{{id}}">Cancelar</span>
+                </a>
+                <a id="link-confirm"  class="tab-item" parent="{{id}}">
+                    <span class="icon icon-check" parent="{{id}}"></span>
+                    <span class="tab-label" parent="{{id}}">Criar</span>
+                </a>
+            </div>
+            </div>
 
             <div class="content">
                 <div class="content-padded">
                     <form>
                         <input type="text" placeholder="Título da Nota">
                         <textarea rows="10" placeholder="Texto"></textarea>
-                        <button class="btn btn-positive btn-block">Criar Nota</button>
                     </form>
                 </div>
             </div>
+
         </script>
 
-
-        <p><button class="help-btn">Help</button></p>
 
         <script src="cordova.js"></script>
 
         <script src="lib/jquery.js"></script>
+        <script src="lib/router.js"></script>
         <script src="lib/handlebars.js"></script>
         <script src="lib/fastclick.js"></script>
 

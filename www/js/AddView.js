@@ -13,9 +13,12 @@ var AddView = function (service) {
 		$('#link-cancel', this.div).click( function (event) {
 			console.log(event);
 			var element = $(event.toElement);
-			var idParent = parseInt(element.attr('parent'));
-			var parent = serv.findById(idParent);
+			var parentId = parseInt(element.attr('parent'));
+			var parent = serv.findById(parentId);
 			$('#screen').html(new NoteView().render(parent));
+		});
+		$('#link-confirm', this.div).click( function (event) {
+			alert('confirm');
 		});
 
 		return this.div;

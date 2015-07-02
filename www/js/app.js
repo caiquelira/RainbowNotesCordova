@@ -8,6 +8,21 @@
 
 	service.initialize(true);
 
+	router.addRoute('', function () {
+		var note = service.findById(0);
+		console.log(note);
+		$('#screen').html(new NoteView().render(note));
+	});
+
+	router.addRoute('note/:id', function (id) {
+		var note = service.findById(parseInt(id));
+		$('#screen').html(new NoteView().render(note));
+	})
+
+	router.start();
+
+	console.log('router started');
+
 	function goHome () {
 		console.log('going home');
 		goNote(0);
@@ -15,8 +30,7 @@
 
 	function goNote(id) {
 		console.log('goNote');
-		var note = service.findByID(id);
-		$('#screen').html(new NoteView().render(note));
+		var note = service.findById(id);
 	}
 
 	function goAdd(parent) {
@@ -25,7 +39,7 @@
 	}
 
 	//goHome();
-	goAdd({id: 0, title: "Home"});
+	//goAdd({id: 0, title: "Home"});
 			
 
 	//service.findById().done(function (note) {console.log(note);} );
