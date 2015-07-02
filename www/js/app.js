@@ -12,13 +12,13 @@
 	router.addRoute('', function () {
 		var note = service.findById(0);
 		console.log(note);
-		$('#screen').html(new NoteView().render(note));
+		$('#screen').html(new NoteView(service).render(note));
 	});
 
 	router.addRoute('note/:id', function (id) {
 		console.log('id is ' + id);
 		var note = service.findById(parseInt(id));
-		$('#screen').html(new NoteView().render(note));
+		$('#screen').html(new NoteView(service).render(note));
 	})
 
 	router.addRoute('add/:parentId', function (parentId) {
@@ -63,13 +63,19 @@
 
 	//$("#link-home").click(goHome);
 	$("#link-settings").click(function () {alert("Developed by:\n-Caíque Lira\n-Lucas Müller");});
+
+
 	document.addEventListener('deviceReady', function () {
 		if (navigator.notification) {
 			window.alert = function (message) {
 				navigator.notification.alert(message, null, "Rainbow Notes", 'OK');
 			}
 		}
-		window.confirm = navigator.notification.confirm;
+		if (navigator.notification) {
+			window.confirm = function (callback) {
+				navigator.notification.confirm("Deseja apagar a nota?", callback, "Confirmação", "Sim,Não");
+			}
+		}
 	}, false);
 
 

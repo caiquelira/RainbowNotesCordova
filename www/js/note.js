@@ -105,8 +105,31 @@ var NoteService = function () {
 	}
 
 	this.deleteNote = function (_id) {
+		var deletedNote = JSON.parse(window.localStorage.getItem(_id));
 		window.localStorage.removeItem(_id);
+		for (var i = 0; i < deletedNote.children.length; i++) {
+			var childId = deletedNote.children[i];
+			var child = JSON.parse(window.localStorage.getItem(childId));
+			for (var i = 0; i < child.parents.length; i++) {
+				if (child.parents[i] == _id) {
+					child.parents.splice(i, i+1);
+				}
+			}
+			window.localStorage.setItem(child.id, JSON.stringify(child));
+		};
+		for (var i = 0; i < deletedNote.parents.length; i++) {
+			var parentId = deletedNote.parents[i];
+			var parent = JSON.parse(window.localStorage.getItem(parentId));
+			for (var i = 0; i < parent.children.length; i++) {
+				if (parent.children[i] == _id) {
+					parent.children.splice(i, i+1);
+				}
+			}
+			window.localStorage.setItem(parent.id, JSON.stringify(parent));
+		};
 	}
+
+	this.hello = "hello world";
 
 }
 

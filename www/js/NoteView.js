@@ -53,12 +53,13 @@ var NoteView = function (service) {
 			console.log(pressed);
 			if (pressed == 1) {
 				var id_ = $('.icon-trash', this.div).attr('myid');
+				alert(serv.hello);
 				serv.deleteNote(id_);
-				$('#screen', this.div).html(new NoteView().render(serv.findRoot()));
+				$('#screen', this.div).html(new NoteView(serv).render(serv.findRoot()));
 			}
 		}
 		$('.icon-trash', this.div).click( function () {
-			window.confirm("Deseja apagar a nota?", deleteCallback, "Confirmação", "Sim,Não");
+			window.confirm(deleteCallback);
 		});
 		//$('.icon-home', this.div).click(function () {alert('button home');});
 		return this.div;
