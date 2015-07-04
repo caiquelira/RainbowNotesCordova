@@ -4,7 +4,6 @@
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <!--link rel="stylesheet" type="text/css" href="css/index.css"-->
@@ -19,7 +18,7 @@
         <header class="bar bar-nav">
             <a class="icon icon-home pull-left" id="link-home" href="#"></a>
             <span class="icon icon-info pull-right" id="link-settings"></span>
-            <h1 class="title2">Rainbow Notes</h1>
+            <h1 class="title2">YaNotes</h1>
         </header>
 
         <div id="screen"></div>
@@ -30,10 +29,14 @@
 
             <header class="bar bar-header-secondary">
                 <div class="pull-right">
-                    <a class="icon icon-compose" href="#edit/{{id}}"></a>
                     {{#if id}}
+                        <a class="icon icon-compose" href="#edit/{{id}}"></a>
                         &nbsp;&nbsp;
                         <span class="icon icon-trash" backId="{{backId}}" myid="{{id}}"></span>
+                    {{else}}
+                            <button id="sync" class="btn pull-right">
+                              Sync
+                            </button>
                     {{/if}}
                 </div>
                 
@@ -186,6 +189,7 @@
         <script src="cordova.js"></script>
 
         <script src="lib/jquery.js"></script>
+        <script src="lib/parse.js"></script>
         <script src="lib/router.js"></script>
         <script src="lib/handlebars.js"></script>
         <script src="lib/fastclick.js"></script>

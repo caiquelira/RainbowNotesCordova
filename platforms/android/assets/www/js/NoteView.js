@@ -53,13 +53,35 @@ var NoteView = function (service) {
 			console.log(pressed);
 			if (pressed == 1) {
 				var id_ = $('.icon-trash', this.div).attr('myid');
-				alert(serv.hello);
-				serv.deleteNote(id_);
+				//alert(serv.hello);
+				serv.deleteNote(parseInt(id_));
 				$('#screen', this.div).html(new NoteView(serv).render(serv.findRoot()));
 			}
 		}
+
 		$('.icon-trash', this.div).click( function () {
-			window.confirm(deleteCallback);
+			//window.confirm(deleteCallback);
+			window.alert('Nota excluída com sucesso!');
+			deleteCallback(1);
+		});
+
+		var the_div = this.div;
+
+		$('#sync', this.div).click (function () {
+			Parse.initialize("UuBzIX2bQ0gcu0aLKWCgVQT8rDqCFh81jdmvUh5K", "aiRDHqlXh6QWX15dhARXrOQ5Sc93reIOmppcHZl0");
+
+			Parse.Cloud.run('sync', {}).then(function(result) {
+			    var notes = [];
+			    for (var i = 0; i < result.length; i++) {
+			    	notes.push(result[i].attributes);
+			    	notes[i].id = notes[i].myid
+			    };
+			    console.log('resp do parse');
+			    console.log(notes);
+			    serv.reset(notes);
+				var note = service.findById(0);
+				$('#screen').html(new NoteView(serv).render(note));
+			});
 		});
 		//$('.icon-home', this.div).click(function () {alert('button home');});
 		return this.div;

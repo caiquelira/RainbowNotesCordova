@@ -49,10 +49,20 @@ var NoteService = function () {
 	this.initialize = function (reset) {
 		//window.localStorage.setItem("notes", JSON.stringify(TestGraph()));
 		//console.log('reset: ' + reset);
-		if (reset) {
-			window.localStorage.clear();	
-		}
+		//if (reset) {
+		window.localStorage.clear();
+
 		var notes = TestGraph();
+		notes[0].children = [];
+		window.localStorage.setItem(notes[0].id, JSON.stringify(notes[0]));
+
+		//for (var i = 0; i < notes.length; i++) {
+		//	window.localStorage.setItem(notes[i].id, JSON.stringify(notes[i]))
+		//};
+		//}
+	}
+
+	this.reset = function (notes) {
 		for (var i = 0; i < notes.length; i++) {
 			window.localStorage.setItem(notes[i].id, JSON.stringify(notes[i]))
 		};
@@ -75,8 +85,10 @@ var NoteService = function () {
 		}*/;
 		res.childrenList = [];
 		res.parentsList = [];
+		console.log('id pai: ' + _id);
 		for (var i = 0; i < res.children.length; i++) {
 			var child = JSON.parse(window.localStorage.getItem(res.children[i]));
+			console.log('idChild: ' + res.children[i]);
 			res.childrenList.push({id: res.children[i], title: child.title});
 		};
 		for (var i = 0; i < res.parents.length; i++) {
@@ -107,24 +119,37 @@ var NoteService = function () {
 	this.deleteNote = function (_id) {
 		var deletedNote = JSON.parse(window.localStorage.getItem(_id));
 		window.localStorage.removeItem(_id);
+		console.log('nota deletada');
+		console.log(deletedNote);
+		console.log('filhos');
 		for (var i = 0; i < deletedNote.children.length; i++) {
 			var childId = deletedNote.children[i];
 			var child = JSON.parse(window.localStorage.getItem(childId));
-			for (var i = 0; i < child.parents.length; i++) {
-				if (child.parents[i] == _id) {
-					child.parents.splice(i, i+1);
+			for (var j = 0; j < child.parents.length; j++) {
+				console.log(child.parents);
+				if (child.parents[j] == _id) {
+					child.parents.splice(j, j+1);
+					j--;
 				}
 			}
 			window.localStorage.setItem(child.id, JSON.stringify(child));
 		};
+		console.log('pais');
+		console.log(deletedNote.parents);
 		for (var i = 0; i < deletedNote.parents.length; i++) {
 			var parentId = deletedNote.parents[i];
 			var parent = JSON.parse(window.localStorage.getItem(parentId));
-			for (var i = 0; i < parent.children.length; i++) {
-				if (parent.children[i] == _id) {
-					parent.children.splice(i, i+1);
+			console.log('pai antes:');
+			console.log(parent);
+			for (var j = 0; j < parent.children.length; j++) {
+				console.log(parent.children);
+				if (parent.children[j] == _id) {
+					parent.children.splice(j, j+1);
+					j--;
 				}
 			}
+			console.log('pai depois:');
+			console.log(parent);
 			window.localStorage.setItem(parent.id, JSON.stringify(parent));
 		};
 	}

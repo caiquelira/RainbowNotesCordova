@@ -37,6 +37,19 @@ var AddView = function (service) {
 			serv.link(parseInt(input.parentId), note.id);
 			console.log('this is the new note');
 			console.log(note);
+
+			//$.get('http://rainbownotes.parseapp.com/sync', {}, function (data) {alert(data);});
+
+			
+
+			//var request = new XMLHttpRequest();
+			//request.open("GET", "http://rainbownotes.parseapp.com/sync", true);
+			//request.onreadystatechange = function() {//Call a function when the state changes.
+			//	var resp = JSON.parse(request.responseText);
+			//	console.log('resposta');
+			//	console.log(resp);
+			//}
+
 			$('#screen').html(new NoteView().render(note));
 		});
 
